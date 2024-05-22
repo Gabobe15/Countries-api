@@ -1,12 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import {Countries, Country } from './component';
+import { Africa, America, Countries, Europe, Oceania, Asia } from './component';
 
 function App() {
 	return (
 		<Router>
 			<Routes>
 				<Route path="/" element={<Countries />} />
-				<Route path="/country/:index/" element={<Country />} />
+				<Route path="/europe/" element={<Europe />} />
+				<Route path="/africa/" element={<Africa />} />
+				<Route path="/america/" element={<America />} />
+				<Route path="/asia/" element={<Asia />} />
+				<Route path="/oceania/" element={<Oceania />} />
 			</Routes>
 		</Router>
 	);

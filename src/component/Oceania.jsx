@@ -4,7 +4,7 @@ import { API } from '../utils/Api';
 import { Link, NavLink } from 'react-router-dom';
 import { NavLinks } from './NavLinks';
 
-function Countries() {
+function Oceania() {
 	const [countries, setCountries] = useState([]);
 	const [searchQuery, setSearchQuery] = useState('');
 	const fetchCountries = () => {
@@ -37,23 +37,32 @@ function Countries() {
 	useEffect(() => {
 		fetchCountries();
 	}, []);
-	countries.sort();
+
+	const oceania = countries.filter((a) => {
+		return a.region === 'Oceania';
+	});
 
 	// Pagination
-	const itemPerPage = 20;
+	const itemPerPage = 16;
 	const [currentPage, setCurrentPage] = useState(1);
 	const indexOfLastItem = currentPage * itemPerPage;
 	const indexOfFirstItem = indexOfLastItem - itemPerPage;
-	const currentItems = countries.slice(indexOfFirstItem, indexOfLastItem); // it is going to show the first and last page 0-4, this mean it consist of four pages
-	const totalPages = Math.ceil(countries.length / itemPerPage); // 10/5 = 2 page
+	let currentItems = oceania.slice(indexOfFirstItem, indexOfLastItem); // it is going to show the first and last page 0-4, this mean it consist of four pages
+	const totalPages = Math.ceil(oceania.length / itemPerPage); // 10/5 = 2 page
 	const pageNumbers = Array.from(
 		{ length: totalPages },
 		(_, index) => index + 1 // we looping throught page numbers and adding 1 since in js numbers start from 0 , _(is parameter we don't want to use currently but you can name it)
 	);
 
+	// let Europe = currentItems.filter((e) => {
+	// 	return e.region === 'Europe';
+	// });
+
+	// currentItems = Europe
+
 	return (
 		<>
-			<NavLinks/>
+			<NavLinks />
 			<div className="search-container">
 				<div className="search">
 					<input
@@ -72,8 +81,8 @@ function Countries() {
 				<div>
 					{searchQuery === ''
 						? ''
-						: `countr${countries.length > 1 ? 'ies' : 'y'} "${
-								countries.length
+						: `countr${oceania.length > 1 ? 'ies' : 'y'} "${
+								oceania.length
 						  }" `}{' '}
 				</div>
 			</div>
@@ -116,7 +125,7 @@ function Countries() {
 						</div>
 					</div>
 				))}
-				{countries.length < 1 && <p>No country found</p>}
+				{oceania.length < 1 && <p>No country found</p>}
 			</div>
 			<div className="pagination-container">
 				<ul className="pagination">
@@ -127,8 +136,6 @@ function Countries() {
 							}
 						>
 							<i className="fa-solid fa-arrow-left" />
-
-							{/* Prev */}
 						</button>
 					</li>
 				</ul>
@@ -155,8 +162,6 @@ function Countries() {
 							}
 						>
 							<i className="fa-solid fa-arrow-right" />
-							{/* Next */}
-							{/* <i className="ci-arrow-right ms-3" /> */}
 						</button>
 					</li>
 				</ul>
@@ -165,4 +170,4 @@ function Countries() {
 	);
 }
 
-export default Countries;
+export default Oceania;
