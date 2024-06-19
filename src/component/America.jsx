@@ -1,48 +1,36 @@
 import { useState, useEffect, Fragment } from 'react';
-import axios from 'axios';
-import { API } from '../utils/Api';
-import { Link, NavLink } from 'react-router-dom';
 import { NavLinks } from './NavLinks';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { getCountry } from '../redux/features/countrySlice';
+
 const America = () => {
-	const [countries, setCountries] = useState([]);
-	const [isLoading, setIsLoading] = useState(false);
 	const [searchQuery, setSearchQuery] = useState('');
-	const fetchCountries = () => {
-		setIsLoading(true);
-		try {
-			axios.get(API).then((res) => {
-				setCountries(res.data);
-				setIsLoading(false);
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
+
+	const dispatch = useDispatch();
+	const { country, error, loading } = useSelector((store) => store.country);
+	useEffect(() => {
+		dispatch(getCountry());
+	}, []);
 
 	const handlefilter = (e) => {
 		const query = e.target.value.toLowerCase();
 		setSearchQuery(query);
 		if (query === '') {
-			fetchCountries();
+			getCountry();
 		} else {
-			const filtered = countries.filter((c) => {
+			const filtered = country.filter((c) => {
 				return (
 					c.name.common.toLowerCase().includes(query) ||
 					c.region.toLowerCase().includes(query)
 					// c.capital.toLowerCase().includes(query)
 				);
 			});
-			return setCountries(filtered);
+			return getCountry(filtered);
 		}
 	};
 
-	useEffect(() => {
-		fetchCountries();
-	}, []);
-	countries.sort();
-
-	const america = countries.filter((a) => {
+	const america = country.filter((a) => {
 		return a.region === 'Americas';
 	});
 
@@ -84,7 +72,7 @@ const America = () => {
 						  }" `}{' '}
 				</div>
 			</div>
-			{isLoading === true && <p>Loading ....</p>}
+			{loading === true && <p>Loading ....</p>}
 			<div className="country">
 				{currentItems?.map((c, index) => (
 					<div key={index} className="section">

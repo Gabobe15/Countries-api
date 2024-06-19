@@ -1,46 +1,38 @@
 import { useState, useEffect, Fragment } from 'react';
-import axios from 'axios';
-import { API } from '../utils/Api';
-import { Link, NavLink } from 'react-router-dom';
 import { NavLinks } from './NavLinks';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { getCountry } from '../redux/features/countrySlice';
+
 const Asia = () => {
-	const [countries, setCountries] = useState([]);
 	const [searchQuery, setSearchQuery] = useState('');
-	const fetchCountries = () => {
-		try {
-			axios.get(API).then((res) => {
-				setCountries(res.data);
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
+	const dispatch = useDispatch();
+	const { country, error, loading } = useSelector((store) => store.country);
+	useEffect(() => {
+		dispatch(getCountry());
+	}, []);
 
 	const handlefilter = (e) => {
 		const query = e.target.value.toLowerCase();
 		setSearchQuery(query);
 		if (query === '') {
-			fetchCountries();
+			getCountry();
 		} else {
-			const filtered = countries.filter((c) => {
+			const filtered = country.filter((c) => {
 				return (
 					c.name.common.toLowerCase().includes(query) ||
 					c.region.toLowerCase().includes(query)
 					// c.capital.toLowerCase().includes(query)
 				);
 			});
-			return setCountries(filtered);
+			return getCountry(filtered);
 		}
 	};
 
-	useEffect(() => {
-		fetchCountries();
-	}, []);
 
-	const asia = countries.filter((a) => {
-		return(a.region === 'Asia')
-	})
+	const asia = country.filter((a) => {
+		return a.region === 'Asia';
+	});
 	// Pagination
 	const itemPerPage = 20;
 	const [currentPage, setCurrentPage] = useState(1);
@@ -53,11 +45,6 @@ const Asia = () => {
 		(_, index) => index + 1 // we looping throught page numbers and adding 1 since in js numbers start from 0 , _(is parameter we don't want to use currently but you can name it)
 	);
 
-	// let Europe = currentItems.filter((e) => {
-	// 	return e.region === 'Europe';
-	// });
-
-	// currentItems = Europe
 
 	return (
 		<>
@@ -80,9 +67,7 @@ const Asia = () => {
 				<div>
 					{searchQuery === ''
 						? ''
-						: `countr${asia.length > 1 ? 'ies' : 'y'} "${
-								asia.length
-						  }" `}{' '}
+						: `countr${asia.length > 1 ? 'ies' : 'y'} "${asia.length}" `}{' '}
 				</div>
 			</div>
 			<div className="country">

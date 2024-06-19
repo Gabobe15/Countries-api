@@ -1,7 +1,6 @@
 import { useState, useEffect, Fragment } from 'react';
 import axios from 'axios';
 import { API } from '../utils/Api';
-import { Link, NavLink } from 'react-router-dom';
 import { NavLinks } from './NavLinks';
 
 const Africa = () => {

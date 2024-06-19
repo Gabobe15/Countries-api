@@ -9,9 +9,6 @@ function Countries() {
 
 	const dispatch = useDispatch();
 	const { country, error, loading } = useSelector((store) => store.country);
-	useEffect(() => {
-		dispatch(getCountry());
-	}, []);
 
 	const handleFilter = (e) => {
 		const query = e.target.value.toLowerCase();
@@ -41,36 +38,43 @@ function Countries() {
 		(_, index) => index + 1 // we looping throught page numbers and adding 1 since in js numbers start from 0 , _(is parameter we don't want to use currently but you can name it)
 	);
 
+	useEffect(() => {
+		dispatch(getCountry());
+	}, []);
+
 	return (
 		<>
-			<NavLinks />
-			<div className="search-container">
-				<div className="search">
-					<input
-						type="text"
-						value={searchQuery}
-						onChange={handleFilter}
-						// onChange={(e) => setSearchQuery(e.target.value)}
-						placeholder="search by country or region"
-					/>
-				</div>
-				<div>
-					{searchQuery === ''
-						? ''
-						: `Showing Results for "${searchQuery || 'No Search Query'}" `}{' '}
-				</div>
-				<div>
-					{searchQuery === ''
-						? ''
-						: `countr${country.length > 1 ? 'ies' : 'y'} "${
-								country.length
-						  }" `}{' '}
-				</div>
-			</div>
+			{error && <p>Getting errors</p>}
 			{loading === true ? (
-				<p>Loading....</p>
+				<h1>Loading...</h1>
 			) : (
 				<>
+					<NavLinks />
+					<div className="search-container">
+						<div className="search">
+							<input
+								type="text"
+								value={searchQuery}
+								onChange={handleFilter}
+								// onChange={(e) => setSearchQuery(e.target.value)}
+								placeholder="search by country or region"
+							/>
+						</div>
+						<div>
+							{searchQuery === ''
+								? ''
+								: `Showing Results for "${
+										searchQuery || 'No Search Query'
+								  }" `}{' '}
+						</div>
+						<div>
+							{searchQuery === ''
+								? ''
+								: `countr${country.length > 1 ? 'ies' : 'y'} "${
+										country.length
+								  }" `}{' '}
+						</div>
+					</div>
 					<div className="country">
 						{currentItems?.map((c, index) => (
 							<div key={index} className="section">

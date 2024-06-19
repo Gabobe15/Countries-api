@@ -1,44 +1,36 @@
 import { useState, useEffect, Fragment } from 'react';
-import axios from 'axios';
-import { API } from '../utils/Api';
-import { Link, NavLink } from 'react-router-dom';
 import { NavLinks } from './NavLinks';
 
+import { useSelector, useDispatch } from 'react-redux';
+import { getCountry } from '../redux/features/countrySlice';
+
 function Oceania() {
-	const [countries, setCountries] = useState([]);
 	const [searchQuery, setSearchQuery] = useState('');
-	const fetchCountries = () => {
-		try {
-			axios.get(API).then((res) => {
-				setCountries(res.data);
-			});
-		} catch (error) {
-			console.log(error);
-		}
-	};
+
+	const dispatch = useDispatch();
+	const { country, error, loading } = useSelector((store) => store.country);
+	useEffect(() => {
+		dispatch(getCountry());
+	}, []);
 
 	const handlefilter = (e) => {
 		const query = e.target.value.toLowerCase();
 		setSearchQuery(query);
 		if (query === '') {
-			fetchCountries();
+			getCountry();
 		} else {
-			const filtered = countries.filter((c) => {
+			const filtered = country.filter((c) => {
 				return (
 					c.name.common.toLowerCase().includes(query) ||
 					c.region.toLowerCase().includes(query)
 					// c.capital.toLowerCase().includes(query)
 				);
 			});
-			return setCountries(filtered);
+			return getCountry(filtered);
 		}
 	};
 
-	useEffect(() => {
-		fetchCountries();
-	}, []);
-
-	const oceania = countries.filter((a) => {
+	const oceania = country.filter((a) => {
 		return a.region === 'Oceania';
 	});
 
@@ -54,11 +46,7 @@ function Oceania() {
 		(_, index) => index + 1 // we looping throught page numbers and adding 1 since in js numbers start from 0 , _(is parameter we don't want to use currently but you can name it)
 	);
 
-	// let Europe = currentItems.filter((e) => {
-	// 	return e.region === 'Europe';
-	// });
 
-	// currentItems = Europe
 
 	return (
 		<>
