@@ -1,12 +1,18 @@
-// import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 // import { Africa, America, Countries, Europe, Oceania, Asia } from './component';
 // import AppPagination from './pagination/AppPagination';
 import TodoCard from './todos/TodoCard';
+import DetailTodo from './todos/DetailTodo';
 
 function App() {
 	return (
 		<>
-			<TodoCard />
+			<Router>
+				<Routes>
+					<Route path="/" element={<TodoCard />} />
+					<Route path="todo/:id/" element={<DetailTodo />} />
+				</Routes>
+			</Router>
 			{/* <Router>
 				<Routes>
 					 <Route path="/" element={<Countries />} />

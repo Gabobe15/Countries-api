@@ -8,7 +8,8 @@ import {
 	Grid,
 	TablePagination,
 } from '@mui/material';
-import TodoDetail from './TodoDetail';
+// import TodoDetail from './TodoDetail';
+import { NavLink } from 'react-router-dom';
 
 const TodoCard = () => {
 	const [rowperpage, rowperpagechange] = useState(6);
@@ -46,9 +47,17 @@ const TodoCard = () => {
 						<Grid container spacing={2}>
 							{todo
 								?.slice(page * rowperpage, page * rowperpage + rowperpage)
-								.map((item) => (
-									<Grid item lg={4} key={item.id}>
-										<TodoDetail todo={item} />
+								.map((todo) => (
+									<Grid item lg={4} key={todo.id}>
+										<Box>
+											<NavLink to={`todo/${todo.id}/`}>
+												<Box>{todo.title}</Box>
+											</NavLink>
+											<FormControlLabel
+												checked={todo.completed}
+												control={<Checkbox />}
+											/>
+										</Box>
 									</Grid>
 								))}
 						</Grid>
