@@ -79,21 +79,45 @@ li > button {
 	border-radius: 5px;
 }
 
-.active{
+.active {
 	z-index: -1;
 	border: 1px solid yellow;
 }
 
-.navlinks{
+.navlinks {
 	width: 700px;
 	margin: 0 auto;
 }
 
-a{
+a {
 	display: inline-block;
 	padding: 20px 10px;
 	font-size: 1.5rem;
 	border: none !important;
 	text-decoration: none;
+}
 
+.search-container {
+	border: 1px solid black;
+	width: 250px;
+	border-radius: 20px;
+	margin: 10 auto;
+	padding: 0;
+}
+
+.search {
+	border: none;
+	outline: none;
+	width: 100%;
+	font-size: 1rem;
+}
+.fetch-data{
+	background: #000;
+	color: #fff;
+	margin: 20px;
+	padding: 10px;
+	border-radius: 5px;
+}
+.data {
+	margin: 50px 100px;
 }
